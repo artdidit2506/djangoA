@@ -26,7 +26,7 @@ def loginPage(request):
         return redirect('home')
     
     if request.method == 'POST':
-        username = request.POST.get('username')
+        username = request.POST.get('username').lower()
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
@@ -44,32 +44,39 @@ def logoutUser(request):
     return redirect('home')
 
 def registerPage(request):
-    page = 'register'
-    # page = UserCreationForm()
-    # if request.user.is_authenticated:
-    #     return redirect('home')
+#     page = 'register'
+    form = UserCreationForm()
+#     if request.user.is_authenticated:
+#         return redirect('home')
     
-    # if request.method == 'POST':
-    #     username = request.POST.get('username')
-    #     email = request.POST.get('email')
-    #     password = request.POST.get('password')
-    #     password2 = request.POST.get('password2')
-    #     if password == password2:
-    #         if User.objects.filter(username=username).exists():
-    #             messages.error(request, 'Username already exists')
-    #             return redirect('register')
-    #         else:
-    #             if User.objects.filter(email=email).exists():
-    #                 messages.error(request, 'Email already exists')
-    #                 return redirect('register')
-    #             else:
-    #                 user = User.objects.create_user(username=username, email=email, password=password)
-    #                 user.save()
-    #                 messages.success(request, 'User created successfully')
-    #                 return redirect('login')
-    #     else:
-    #         messages.error(request, 'Passwords do not match')
-    #         return redirect('register')
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            login(request, user)
+            return redirect('home')
+#         username = request.POST.get('username')
+#         email = request.POST.get('email')
+#         password = request.POST.get('password')
+#         password2 = request.POST.get('password2')
+#         if password == password2:
+#             if User.objects.filter(username=username).exists():
+#                 messages.error(request, 'Username already exists')
+#                 return redirect('register')
+#             else:
+#                 if User.objects.filter(email=email).exists():
+#                     messages.error(request, 'Email already exists')
+#                     return redirect('register')
+#                 else:
+#                     user = User.objects.create_user(username=username, email=email, password=password)
+#                     user.save()
+#                     messages.success(request, 'User created successfully')
+#                     return redirect('login')
+        else:
+            messages.error(request, 'An Error occured during registration')
+            # return redirect('register')
     context = {
         'form': form,
     }
