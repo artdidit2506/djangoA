@@ -9,16 +9,12 @@
 <div>
     <form method="POST" action="">
         {% csrf_token %}
-
         <label for="">Username :</label>
-        <input type="text" name="username" placeholder="Input Username">
-
+        <input type="text" name="username" placeholder="Enter Username">
         <label for="">Password :</label>
         <input type="password" name="password" placeholder="Enter Password">
-
         <input type="submit" value="login">
     </form>
-
     <p>Havent signed up yet?</p>
     <a href="{% url 'register' %}">Sign Up</a>
 </div>

@@ -35,7 +35,7 @@ def loginPage(request):
         else:
             messages.error(request, 'Username or password is incorrect')
     context = {
-        'base': page,
+        'page': page,
         }
     return render(request, 'base/login_register.html', context)
 
@@ -45,7 +45,7 @@ def logoutUser(request):
 
 def registerPage(request):
     page = 'register'
-    page = UserCreationForm()
+    # page = UserCreationForm()
     # if request.user.is_authenticated:
     #     return redirect('home')
     
