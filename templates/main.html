@@ -13,6 +13,18 @@
     {% include "navbar.html" %}
     <!-- End Navbar -->
 
+    <!-- Message Login -->
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+    </ul>
+    {% endif %}
+
+    <!-- Message Login -->
+
     <!-- Content -->
     {% block content %} {% endblock content %}
     <!-- End Content -->
