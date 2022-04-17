@@ -1,3 +1,4 @@
+from email.quoprimime import body_check
 from multiprocessing import context
 from pydoc_data.topics import topics
 from unicodedata import name
@@ -9,7 +10,7 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from .models import Room, Topic
+from .models import Room, Topic, Message
 from .forms import RoomForm
 
 # Create your views here.
@@ -44,10 +45,9 @@ def logoutUser(request):
     return redirect('home')
 
 def registerPage(request):
-#     page = 'register'
+
     form = UserCreationForm()
-#     if request.user.is_authenticated:
-#         return redirect('home')
+
     
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -57,26 +57,10 @@ def registerPage(request):
             user.save()
             login(request, user)
             return redirect('home')
-#         username = request.POST.get('username')
-#         email = request.POST.get('email')
-#         password = request.POST.get('password')
-#         password2 = request.POST.get('password2')
-#         if password == password2:
-#             if User.objects.filter(username=username).exists():
-#                 messages.error(request, 'Username already exists')
-#                 return redirect('register')
-#             else:
-#                 if User.objects.filter(email=email).exists():
-#                     messages.error(request, 'Email already exists')
-#                     return redirect('register')
-#                 else:
-#                     user = User.objects.create_user(username=username, email=email, password=password)
-#                     user.save()
-#                     messages.success(request, 'User created successfully')
-#                     return redirect('login')
+
         else:
             messages.error(request, 'An Error occured during registration')
-            # return redirect('register')
+
     context = {
         'form': form,
     }
@@ -100,10 +84,19 @@ def home(request):
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
-    messages = room.message_set.all()
+    room_messages = room.message_set.all().order_by('-created')
+    participants = room.participants.all()
+    if request.method == 'POST':
+        message = Message.objects.create (
+            user=request.user,
+            room=room,
+            body=request.POST.get('body'),
+        )
+        return redirect('room', pk=room.id)
     context = {
         'room': room,
-        'messages': messages,
+        'room_messages': room_messages,
+        'participants': participants,
     }
     return render(request, 'base/room.html', context)
 
