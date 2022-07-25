@@ -1,7 +1,6 @@
 {% extends 'main.html' %}
 <!-- Content -->
 {% block content %}
-
 <main class="layout layout--3">
     <div class="container">
         <!-- Topics Start -->
@@ -10,6 +9,9 @@
                 <h2>Browse Topics</h2>
             </div>
             <ul class="topics__list">
+                <li>
+                    <a href="/" class="active">All <span>553</span></a>
+                </li>
                 <li>
                     <a href="/">Python <span>232</span></a>
                 </li>
@@ -32,7 +34,6 @@
             </a>
         </div>
         <!-- Topics End -->
-
 
         <!-- Room List Start -->
         <div class="roomList">
@@ -229,6 +230,31 @@
     </div>
 </main>
 
+<style>
+    .home-container {
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+    }
+</style>
+<div class="home-container">
 
+    <!-- Topic -->
+    <div>
+        {% include "base/topic_component.html" %}
+    </div>
+    <div>
+        <h5>{{room_count}} rooms available</h5>
+        <a href="{% url 'create-room' %}">Create Room</a>
+
+        <!-- Feed -->
+        {% include 'base/feed_component.html' %}
+
+    </div>
+
+    <!-- Activity -->
+    <div>
+        {% include 'base/activity_component.html' %}
+    </div>
+</div>
 {% endblock content %}
 <!-- End Content -->
