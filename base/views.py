@@ -207,7 +207,7 @@ def deleteMessage(request, pk):
 def updateUser(request):
     user = request.user
     form = UserForm(instance=user)
-    
+
     if request.method == 'POST':
         form = UserForm(request.POST, instance=user)
         if form.is_valid():
@@ -215,5 +215,14 @@ def updateUser(request):
             return redirect('user-profile', pk=user.id)
         else:
             messages.error(request, 'An Error occured during registration')
-    
+
     return render(request, 'base/update-user.html', {'form': form})
+
+
+def topicsPage(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    topics = Topic.objects.filter(name__icontains=q)
+    context = {
+        'topics': topics,
+    }
+    return render(request, 'base/topics.html', context)
