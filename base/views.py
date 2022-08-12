@@ -216,10 +216,7 @@ def updateUser(request):
         else:
             messages.error(request, 'An Error occured during registration')
 
-        context = {
-            'form': form,
-        }
-    return render(request, 'base/update-user.html', context)
+    return render(request, 'base/update-user.html', {'form': form})
 
 
 def topicsPage(request):
@@ -232,8 +229,8 @@ def topicsPage(request):
 
 
 def activityPage(request):
-    room_message = Message.objects.all()
+    room_messages = Message.objects.all()
     context = {
-        'room_message': room_message,
+        'room_messages': room_messages,
     }
     return render(request, 'base/activity.html', context)

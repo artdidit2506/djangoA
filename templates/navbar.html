@@ -1,4 +1,7 @@
 {% load static %}
+<!-- <nav class="container"> -->
+
+
 <header class="header header--loggedIn">
     <div class="container">
         <a href="{% url 'home' %}" class="header__logo">
@@ -18,11 +21,8 @@
         </form>
 
         <nav class="header__menu">
-
-
             <!-- Logged In -->
             {% if request.user.is_authenticated %}
-
             <div class="header__user">
                 <a href="{% url 'update-user' %}">
                     <div class="avatar avatar--medium active">
@@ -68,9 +68,4 @@
         </nav>
     </div>
 </header>
-
-<!-- 
-<form method="GET" action="{% url 'home' %}">
-    <input type="text" name="q" placeholder="Search Rooms..." />
-
-</form> -->
+<!-- </nav> -->
